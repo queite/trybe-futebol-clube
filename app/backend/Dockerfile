@@ -3,5 +3,4 @@ WORKDIR /app-backend
 COPY . .
 RUN npm install
 EXPOSE 3001
-RUN npx tsc
 CMD ["npm", "start"]
