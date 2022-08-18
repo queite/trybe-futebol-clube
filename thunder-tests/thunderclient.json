@@ -8,12 +8,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2022-08-18T17:26:30.552Z",
-    "modified": "2022-08-18T17:45:58.216Z",
+    "modified": "2022-08-18T22:18:05.404Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"admin@admin.com\",\n  \"password\": \"string\"\n}",
+      "raw": "{\n  \"email\": \"\",\n  \"password\": \"secret_admin\"\n}",
       "form": []
     },
     "tests": []
