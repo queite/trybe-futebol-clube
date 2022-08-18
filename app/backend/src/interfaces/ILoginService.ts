@@ -1,5 +1,6 @@
-import { ILogin } from './IUser';
+import IUser, { ILogin } from './IUser';
 
-export default interface ILoginService<T> {
-  login(data: ILogin): Promise<T>
+export default interface ILoginService {
+  login(data: ILogin): Promise<IUser>
+  validate(email: string): Promise<string>
 }

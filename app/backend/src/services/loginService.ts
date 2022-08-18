@@ -4,9 +4,14 @@ import User from '../database/models/User';
 import ILoginService from '../interfaces/ILoginService';
 import UnauthorizedError from '../errors/unauthorizedError';
 
-export default class LoginService implements ILoginService<IUser> {
-  public login = async (login: ILogin): Promise<IUser> => {
-    const user = await User.findOne({ where: { email: login.email } });
+export default class LoginService implements ILoginService {
+  private getByEmail = async (email: string): Promise<IUser | null> => {
+    const user = await User.findOne({ where: { email } });
+    return user;
+  };
+
+  public async login(login: ILogin): Promise<IUser> {
+    const user = await this.getByEmail(login.email);
 
     if (!user) throw new UnauthorizedError('Incorrect email or password');
 
@@ -15,5 +20,11 @@ export default class LoginService implements ILoginService<IUser> {
     if (!checkPassword) throw new UnauthorizedError('Incorrect email or password');
 
     return user;
-  };
+  }
+
+  public async validate(email: string) {
+    const user = await this.getByEmail(email);
+    if (!user) throw new UnauthorizedError('Invalid  token');
+    return user.role;
+  }
 }

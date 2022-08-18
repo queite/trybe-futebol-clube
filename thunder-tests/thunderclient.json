@@ -8,14 +8,33 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2022-08-18T17:26:30.552Z",
-    "modified": "2022-08-18T22:18:05.404Z",
+    "modified": "2022-08-18T23:16:18.085Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"\",\n  \"password\": \"secret_admin\"\n}",
+      "raw": "{\n  \"email\": \"admin@admin.com\",\n  \"password\": \"secret_admin\"\n}",
       "form": []
     },
+    "tests": []
+  },
+  {
+    "_id": "f547b51d-0f05-4b73-aa92-dae82dbab3ad",
+    "colId": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
+    "containerId": "0c6e4641-a968-44a4-804d-48609b9d1aa0",
+    "name": "login/validate",
+    "url": "localhost:3001/login/validate",
+    "method": "GET",
+    "sortNum": 30000,
+    "created": "2022-08-18T23:01:18.230Z",
+    "modified": "2022-08-18T23:16:09.938Z",
+    "headers": [
+      {
+        "name": "Authorization",
+        "value": "eyJhbGciOiJIUzI1NiJ9.YWRtaW5AYWRtaW4uY29t.s1U6I8B6x_9eLeJyb9PdjTz1JbNXo57xor-T1493RW0"
+      }
+    ],
+    "params": [],
     "tests": []
   }
 ]
