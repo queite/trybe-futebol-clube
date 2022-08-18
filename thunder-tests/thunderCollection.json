@@ -1,0 +1,17 @@
+[
+  {
+    "_id": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
+    "colName": "TFC",
+    "created": "2022-08-18T17:25:59.853Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "0c6e4641-a968-44a4-804d-48609b9d1aa0",
+        "name": "login",
+        "containerId": "",
+        "created": "2022-08-18T17:26:05.909Z",
+        "sortNum": 10000
+      }
+    ]
+  }
+]
