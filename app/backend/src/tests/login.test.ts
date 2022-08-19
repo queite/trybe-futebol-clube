@@ -43,8 +43,15 @@ describe('/login', () => {
     sinon.stub(bcrypt, 'compareSync').resolves(true);
 
     const response = await chai.request(app).post('/login').send(loginMock);
-    console.log(response.body)
     expect(response.body).to.have.key('token');
+  })
+
+  it('should return an error if email is not registered', async () => {
+    sinon.stub(User, 'findOne').resolves(null);
+
+    const response = await chai.request(app).post('/login').send(loginMock);
+    console.log(response.body)
+    expect(response.body).to.be.deep.eq({ message: 'Incorrect email or password' });
   })
 
   it('should return an error if email is not send', async () => {
