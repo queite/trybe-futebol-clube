@@ -36,5 +36,33 @@
     ],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "b8086480-9455-4e6a-a995-3bd5301d168a",
+    "colId": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
+    "containerId": "d4bd1f73-20b6-4713-9a43-c5310202002b",
+    "name": "getAll",
+    "url": "localhost:3001/teams",
+    "method": "GET",
+    "sortNum": 40000,
+    "created": "2022-08-19T18:07:04.936Z",
+    "modified": "2022-08-19T18:07:30.877Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "75415e9d-28c5-4e8a-960a-d27c40530680",
+    "colId": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
+    "containerId": "d4bd1f73-20b6-4713-9a43-c5310202002b",
+    "name": "getById",
+    "url": "localhost:3001/teams/1",
+    "method": "GET",
+    "sortNum": 50000,
+    "created": "2022-08-19T18:19:34.491Z",
+    "modified": "2022-08-19T18:19:44.820Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
