@@ -64,5 +64,19 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "cdb59ac0-1d31-4ccf-94c7-0a02cfb62c42",
+    "colId": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
+    "containerId": "efc4ebae-cdaf-4d9d-b761-20e2809edff4",
+    "name": "getAll",
+    "url": "localhost:3001/matches",
+    "method": "GET",
+    "sortNum": 60000,
+    "created": "2022-08-19T21:47:18.746Z",
+    "modified": "2022-08-19T22:26:00.454Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]
