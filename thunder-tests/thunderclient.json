@@ -42,11 +42,11 @@
     "colId": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
     "containerId": "d4bd1f73-20b6-4713-9a43-c5310202002b",
     "name": "getAll",
-    "url": "localhost:3001/teams",
+    "url": "localhost:3003/teams",
     "method": "GET",
     "sortNum": 40000,
     "created": "2022-08-19T18:07:04.936Z",
-    "modified": "2022-08-19T18:07:30.877Z",
+    "modified": "2022-08-22T17:23:42.360Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -88,7 +88,7 @@
     "method": "POST",
     "sortNum": 70000,
     "created": "2022-08-22T12:51:23.575Z",
-    "modified": "2022-08-22T13:20:24.694Z",
+    "modified": "2022-08-22T18:20:23.064Z",
     "headers": [
       {
         "name": "Authorization",
@@ -98,7 +98,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n  \"homeTeam\": 2,\r\n  \"awayTeam\": 8,\r\n  \"homeTeamGoals\": 2,\r\n  \"awayTeamGoals\": 2\r\n}",
+      "raw": "{\n  \"homeTeam\": 6,\n  \"awayTeam\": 6,\n  \"homeTeamGoals\": 2,\n  \"awayTeamGoals\": 2\n}",
       "form": []
     },
     "tests": []

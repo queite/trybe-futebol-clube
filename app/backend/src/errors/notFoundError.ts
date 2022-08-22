@@ -4,6 +4,6 @@ export default class NotFoundError extends Error {
   constructor(message: string) {
     super(message);
     this.name = 'NotFoundError';
-    this.status = 400;
+    this.status = 404;
   }
 }
