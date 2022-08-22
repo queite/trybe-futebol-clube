@@ -46,6 +46,13 @@ describe('/login', () => {
     expect(response.body).to.be.deep.eq({ message: 'Incorrect email or password' });
   })
 
+  it('should return an error if password is not correct', async () => {
+    sinon.stub(bcrypt, 'compareSync').resolves(false);
+
+    const response = await chai.request(app).post('/login').send(loginMock);
+    expect(response.body).to.be.deep.eq({ message: 'Incorrect email or password' });
+  })
+
   it('should return an error if email is not send', async () => {
     const response = await chai.request(app).post('/login').send(badLoginMock);
     expect(response.body).to.be.deep.eq({ message: 'All fields must be filled' });
@@ -65,8 +72,4 @@ describe('/login/validate', () => {
 
     expect(response.body).to.be.deep.eq({role: 'any'});
   })
-
-  // it('should return the message "Invalid token" if the token is invalid', async() => {
-  //   sinon.stub(jwtService,  'verify').returns('test@test.com')
-  // })
 })
