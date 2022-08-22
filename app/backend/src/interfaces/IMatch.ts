@@ -8,10 +8,10 @@ export interface ISaveMatchBody {
 export default interface IMatch extends ISaveMatchBody {
   id: number
   inProgress: boolean
-  teamHome: {
+  teamHome?: {
     teamName: string
   }
-  teamAway: {
+  teamAway?: {
     teamName: string
   }
 }

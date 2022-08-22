@@ -1,10 +1,13 @@
 import { Router } from 'express';
+import authMiddleware from '../middlewares/authMiddleware';
 import MatchController from '../controllers/matchController';
 
 const router = Router();
 
-const matchController = new MatchController();
+// const matchController = new MatchController();
 
-router.get('/', matchController.getAll);
+router.get('/', (req, res) => MatchController.getAll(req, res));
+router.post('/', authMiddleware, (req, res) => MatchController.save(req, res));
+router.patch('/:id/finish', (req, res) => MatchController.finishMatch(req, res));
 
 export default router;
