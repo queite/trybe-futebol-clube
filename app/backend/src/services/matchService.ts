@@ -22,9 +22,9 @@ export default class MatchService {
   }
 
   public static async finishMatch(id: number) {
-    // query update tem como retorno [1] se o registro é alterado e [0] se já for false ou não houver id
-    await Match.update({ inProgress: false }, {
+    const update = await Match.update({ inProgress: false }, {
       where: { id },
     });
+    return update[0]; // query update tem como retorno [1] se o registro é alterado e [0] se já for false ou não houver
   }
 }

@@ -108,11 +108,11 @@
     "colId": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
     "containerId": "efc4ebae-cdaf-4d9d-b761-20e2809edff4",
     "name": "finish",
-    "url": "localhost:3001/matches/2/finish",
+    "url": "localhost:3001/matches/50/finish",
     "method": "PATCH",
     "sortNum": 90000,
     "created": "2022-08-22T13:04:28.872Z",
-    "modified": "2022-08-22T13:06:26.304Z",
+    "modified": "2022-08-22T13:27:30.721Z",
     "headers": [],
     "params": [],
     "tests": []
