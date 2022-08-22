@@ -2,26 +2,18 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
-import IUser from '../interfaces/IUser';
 
 import { app } from '../app';
 import User from '../database/models/User';
 import jwtService from '../services/jwtService';
 import * as bcrypt from 'bcryptjs';
 import LoginService from '../services/loginService';
+import { userMock } from './mocks/loginMock';
 
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
-
-const userMock: IUser = {
-  id: 1,
-  username: 'test',
-  role: 'any',
-  email: 'test@test.com',
-  password: '123456',
-}
 
 const loginMock = {
   email: 'test@test.com',
@@ -73,4 +65,8 @@ describe('/login/validate', () => {
 
     expect(response.body).to.be.deep.eq({role: 'any'});
   })
+
+  // it('should return the message "Invalid token" if the token is invalid', async() => {
+  //   sinon.stub(jwtService,  'verify').returns('test@test.com')
+  // })
 })

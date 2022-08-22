@@ -29,10 +29,10 @@ export default class MatchService {
 
   public static async finishMatch(id: number) {
     // query update tem como retorno [1] se o registro é alterado e [0] se já for false ou não houver
-    const update = await Match.update({ inProgress: false }, {
+    const result = await Match.update({ inProgress: false }, {
       where: { id },
     });
-    if (!update) throw new BadRequestError('Match already finished or nonexistent ID');
+    if (!result) throw new BadRequestError('Match already finished or nonexistent ID');
   }
 
   public static async updateMatch(id: number, body: IGoals) {

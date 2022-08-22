@@ -5,8 +5,8 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import Match from '../database/models/Match';
-import { matchMock } from './mocks/matchMocks';
-
+import { inProgressMatchMock, matchMock } from './mocks/matchMocks';
+import { Model } from 'sequelize/types';
 // import { Response } from 'superagent';
 
 chai.use(chaiHttp);
@@ -25,5 +25,18 @@ describe('/matches', () => {
     expect(response.status).to.equal(200)
     expect(response.body).to.be.an('array');
     expect(response.body).to.be.deep.equal([matchMock]);
+  })
+})
+
+describe('/:id/finish', () => {
+  afterEach(() => {
+    sinon.restore();
+  })
+
+  it('should return the message "Finished" in case of succcess', async () => {
+    sinon.stub(Match, 'update').resolves([1, []]);
+
+    const response = await chai.request(app).patch('/matches/1/finish');
+    expect(response.body).to.be.deep.eq({message: 'Finished'});
   })
 })

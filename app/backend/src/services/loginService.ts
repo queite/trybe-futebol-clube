@@ -24,7 +24,7 @@ export default class LoginService {
 
   public static async validate(email: string) {
     const user = await LoginService.getByEmail(email);
-    if (!user) throw new UnauthorizedError('Invalid  token');
+    if (!user) throw new UnauthorizedError('Invalid token');
     return user.role;
   }
 }
