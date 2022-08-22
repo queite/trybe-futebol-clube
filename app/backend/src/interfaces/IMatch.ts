@@ -1,8 +1,11 @@
-export interface ISaveMatchBody {
-  homeTeam: number
-  awayTeam: number
+export interface IGoals {
   homeTeamGoals: number
   awayTeamGoals: number
+}
+
+export interface ISaveMatchBody extends IGoals {
+  homeTeam: number
+  awayTeam: number
 }
 
 export default interface IMatch extends ISaveMatchBody {

@@ -1,4 +1,4 @@
-import { ISaveMatchBody } from '../interfaces/IMatch';
+import { IGoals, ISaveMatchBody } from '../interfaces/IMatch';
 import Match from '../database/models/Match';
 import Team from '../database/models/Team';
 import BadRequestError from '../errors/badRequestError';
@@ -33,5 +33,12 @@ export default class MatchService {
       where: { id },
     });
     if (!update) throw new BadRequestError('Match already finished or nonexistent ID');
+  }
+
+  public static async updateMatch(id: number, body: IGoals) {
+    const update = await Match.update(body, {
+      where: { id },
+    });
+    if (!update) throw new BadRequestError('Something went wrong');
   }
 }

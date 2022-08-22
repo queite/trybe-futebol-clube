@@ -74,7 +74,7 @@
     "method": "GET",
     "sortNum": 60000,
     "created": "2022-08-19T21:47:18.746Z",
-    "modified": "2022-08-19T22:26:00.454Z",
+    "modified": "2022-08-22T18:32:48.558Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -115,6 +115,25 @@
     "modified": "2022-08-22T13:27:30.721Z",
     "headers": [],
     "params": [],
+    "tests": []
+  },
+  {
+    "_id": "a85f32f3-0428-4b40-bde8-2db175eded1e",
+    "colId": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
+    "containerId": "efc4ebae-cdaf-4d9d-b761-20e2809edff4",
+    "name": "update",
+    "url": "localhost:3001/matches/48",
+    "method": "PATCH",
+    "sortNum": 100000,
+    "created": "2022-08-22T18:31:36.727Z",
+    "modified": "2022-08-22T18:32:45.716Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\r\n  \"homeTeamGoals\": 3,\r\n  \"awayTeamGoals\": 1\r\n}",
+      "form": []
+    },
     "tests": []
   }
 ]
