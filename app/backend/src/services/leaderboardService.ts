@@ -1,3 +1,4 @@
+import ITeam from '../interfaces/ITeam';
 import IBoard from '../interfaces/Iboard';
 import IMatch from '../interfaces/IMatch';
 import MatchService from './matchService';
@@ -88,5 +89,44 @@ export default class LeaderboardService {
       || b.goalsBalance - a.goalsBalance
       || b.goalsFavor - a.goalsFavor
       || a.goalsOwn - b.goalsOwn);
+  }
+
+  public static filterTeams(team: ITeam, homeTeams: IBoard[]) {
+    const [obj] = homeTeams.filter((item) => item.name === team.teamName);
+    return obj;
+  }
+
+  public static createTotalResults(teams:ITeam[], homeTeams: IBoard[], awayTeams: IBoard[]) {
+    return teams.map((team) => ({
+      name: team.teamName,
+      totalPoints: this.filterTeams(team, homeTeams).totalPoints
+        + this.filterTeams(team, awayTeams).totalPoints,
+      totalGames: this.filterTeams(team, homeTeams).totalGames
+        + this.filterTeams(team, awayTeams).totalGames,
+      totalVictories: this.filterTeams(team, homeTeams).totalVictories
+        + this.filterTeams(team, awayTeams).totalVictories,
+      totalDraws: this.filterTeams(team, homeTeams).totalDraws
+        + this.filterTeams(team, awayTeams).totalDraws,
+      totalLosses: this.filterTeams(team, homeTeams).totalLosses
+        + this.filterTeams(team, awayTeams).totalLosses,
+      goalsFavor: this.filterTeams(team, homeTeams).goalsFavor
+        + this.filterTeams(team, awayTeams).goalsFavor,
+      goalsOwn: this.filterTeams(team, homeTeams).goalsOwn
+        + this.filterTeams(team, awayTeams).goalsOwn,
+      goalsBalance: this.filterTeams(team, homeTeams).goalsBalance
+      + this.filterTeams(team, awayTeams).goalsBalance }));
+  }
+
+  public static async getTotalResults() {
+    const teams = await TeamService.getAll();
+    const homeTeams = await LeaderboardService.getResults('home');
+    const awayTeams = await LeaderboardService.getResults('away');
+
+    const board = this.createTotalResults(teams, homeTeams, awayTeams);
+    const finishedBoard = board.map((item) => ({
+      ...item,
+      efficiency: this.efficiencyCalc(item.totalPoints, item.totalGames),
+    }));
+    return this.orderBoard(finishedBoard);
   }
 }
