@@ -7,3 +7,19 @@ export const userMock: IUser = {
   email: 'test@test.com',
   password: '123456',
 }
+
+export const loginMock = {
+  email: 'test@test.com',
+  password: '123456',
+}
+
+
+export const loginBadPasswordMock = {
+  email: 'test@test.com',
+  password: '12345',
+}
+
+export const badLoginMock = {
+  email: null,
+  password: '123456',
+}

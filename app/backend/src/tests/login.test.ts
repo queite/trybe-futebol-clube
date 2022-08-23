@@ -8,28 +8,12 @@ import User from '../database/models/User';
 import jwtService from '../services/jwtService';
 import * as bcrypt from 'bcryptjs';
 import LoginService from '../services/loginService';
-import { userMock } from './mocks/loginMock';
+import { badLoginMock, loginBadPasswordMock, loginMock, userMock } from './mocks/loginMock';
 
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
-
-const loginMock = {
-  email: 'test@test.com',
-  password: '123456',
-}
-
-
-const loginBadPasswordMock = {
-  email: 'test@test.com',
-  password: '12345',
-}
-
-const badLoginMock = {
-  email: null,
-  password: '123456',
-}
 
 describe('/login', () => {
   afterEach(() => {
