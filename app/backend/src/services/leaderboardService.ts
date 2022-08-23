@@ -91,6 +91,7 @@ export default class LeaderboardService {
       || a.goalsOwn - b.goalsOwn);
   }
 
+  // Métodos para geração de resultado consolidado
   public static filterTeams(team: ITeam, homeTeams: IBoard[]) {
     const [obj] = homeTeams.filter((item) => item.name === team.teamName);
     return obj;

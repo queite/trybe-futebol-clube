@@ -20,6 +20,12 @@ const loginMock = {
   password: '123456',
 }
 
+
+const loginBadPasswordMock = {
+  email: 'test@test.com',
+  password: '12345',
+}
+
 const badLoginMock = {
   email: null,
   password: '123456',
@@ -32,7 +38,7 @@ describe('/login', () => {
 
   it('should return a token in case of success', async () => {
     sinon.stub(User, 'findOne').resolves(userMock as User);
-    sinon.stub(bcrypt, 'compareSync').resolves(true);
+    sinon.stub(bcrypt, 'compareSync').returns(true);
 
     const response = await chai.request(app).post('/login').send(loginMock);
     expect(response.body).to.have.key('token');
@@ -42,14 +48,14 @@ describe('/login', () => {
     sinon.stub(User, 'findOne').resolves(null);
 
     const response = await chai.request(app).post('/login').send(loginMock);
-    console.log(response.body)
     expect(response.body).to.be.deep.eq({ message: 'Incorrect email or password' });
   })
 
   it('should return an error if password is not correct', async () => {
-    sinon.stub(bcrypt, 'compareSync').resolves(false);
+    sinon.stub(LoginService, 'getByEmail').resolves(userMock)
+    sinon.stub(bcrypt, 'compareSync').returns(false);
 
-    const response = await chai.request(app).post('/login').send(loginMock);
+    const response = await chai.request(app).post('/login').send(loginBadPasswordMock);
     expect(response.body).to.be.deep.eq({ message: 'Incorrect email or password' });
   })
 
@@ -71,5 +77,20 @@ describe('/login/validate', () => {
     const response = await chai.request(app).get('/login/validate').set({ "Authorization": `token` });
 
     expect(response.body).to.be.deep.eq({role: 'any'});
+  })
+
+  it('should return status 401 and message "Invalid token" if token is not send', async () => {
+    const response = await chai.request(app).get('/login/validate')
+    expect(response.status).to.be.eq(401);
+    expect(response.body).to.be.deep.eq({message: 'Invalid token'});
+  })
+
+  it('should return status 401 and meddage "Email not found" if the email is not registered', async () => {
+    sinon.stub(jwtService,  'verify').returns('test@test.com')
+    sinon.stub(LoginService, 'getByEmail').resolves(null)
+
+    const res = await chai.request(app).get('/login/validate').set({ "Authorization": `token` });
+    expect(res.status).to.be.eq(404);
+    expect(res.body).to.be.deep.eq({message: 'Email not found'});
   })
 })

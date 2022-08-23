@@ -3,6 +3,7 @@ import IUser, { ILogin } from '../interfaces/IUser';
 import User from '../database/models/User';
 // import ILoginService from '../interfaces/ILoginService';
 import UnauthorizedError from '../errors/unauthorizedError';
+import NotFoundError from '../errors/notFoundError';
 
 export default class LoginService {
   public static async getByEmail(email: string): Promise<IUser | null> {
@@ -24,7 +25,7 @@ export default class LoginService {
 
   public static async validate(email: string) {
     const user = await LoginService.getByEmail(email);
-    if (!user) throw new UnauthorizedError('Invalid token');
+    if (!user) throw new NotFoundError('Email not found');
     return user.role;
   }
 }
