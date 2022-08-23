@@ -32,13 +32,13 @@ export default class MatchService {
     const result = await Match.update({ inProgress: false }, {
       where: { id },
     });
-    if (!result) throw new BadRequestError('Match already finished or nonexistent ID');
+    if (!result[0]) throw new BadRequestError('Match already finished or nonexistent ID');
   }
 
   public static async updateMatch(id: number, body: IGoals) {
     const update = await Match.update(body, {
       where: { id },
     });
-    if (!update) throw new BadRequestError('Something went wrong');
+    if (!update[0]) throw new BadRequestError('Something went wrong');
   }
 }
