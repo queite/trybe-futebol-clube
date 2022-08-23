@@ -70,11 +70,11 @@
     "colId": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
     "containerId": "efc4ebae-cdaf-4d9d-b761-20e2809edff4",
     "name": "getAll",
-    "url": "localhost:3001/matches",
+    "url": "localhost:3003/matches",
     "method": "GET",
     "sortNum": 60000,
     "created": "2022-08-19T21:47:18.746Z",
-    "modified": "2022-08-22T18:32:48.558Z",
+    "modified": "2022-08-22T23:52:37.736Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -134,6 +134,20 @@
       "raw": "{\r\n  \"homeTeamGoals\": 3,\r\n  \"awayTeamGoals\": 1\r\n}",
       "form": []
     },
+    "tests": []
+  },
+  {
+    "_id": "7fd694aa-0036-4029-abd6-cc9e5b7454d6",
+    "colId": "1cd0fb64-96eb-496c-a219-e3b3a5e168b3",
+    "containerId": "806ac251-6cb7-4e96-aedf-7457eea3ad58",
+    "name": "getHome",
+    "url": "localhost:3003/leaderboard/home",
+    "method": "GET",
+    "sortNum": 110000,
+    "created": "2022-08-22T23:34:08.072Z",
+    "modified": "2022-08-22T23:52:40.924Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]
