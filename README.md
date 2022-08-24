@@ -9,6 +9,7 @@ The goal was to build an API and integrate — by docker-compose — the apps, s
 The API was tested using Sinon, Mocha and Chai. <br>
 
 🛠️ **Tools:**
+* [TypeScript](https://www.typescriptlang.org/)
 * [Sequelize](https://sequelize.org/)
 * [Express](https://expressjs.com/)
 * [Node](https://nodejs.org/en/)
