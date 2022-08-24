@@ -24,7 +24,6 @@ describe('/leaderboard/home', () => {
     sinon.stub(MatchService, 'getAll').resolves(allMatchesMock as unknown as Match[])
 
     const res = await chai.request(app).get('/leaderboard/home')
-    console.log(res.body)
     expect(res.status).to.be.eq(200);
     expect(res.body).to.be.deep.eq(leaderboardHomeMock);
   })
