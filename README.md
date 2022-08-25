@@ -39,7 +39,7 @@ Update in progress macth | PATCH /matches/:id
 Shows ranking of home teams | GET /leaderboard/home
 Shows ranking of away teams | GET /leaderboard/away
 Shows general ranking | GET /leaderboard
-<br/>
+<br>
 
 <!-- ## 📜Documentation
 Access the route `/api-docs` to see the documentation.
@@ -50,7 +50,12 @@ Ex.: `http://localhost:3000/api-docs`
 
 ---
 
-## How to install the application:
+ ## ⚙️ How to install the application:
+
+<details>
+
+<summary> Install and execute </summary> <br>
+
 Download the code:
 ```
 git clone git@github.com:queite/trybe-futebol-clube.git
@@ -69,7 +74,27 @@ npm run compose:up
 ```
 
 Go to the `localhost:3000` to see from the frontend or use the routes on Thunder Client to see the back-end. <br>
-Ex.: `localhost:3001/leaderboard`
+Ex.: `localhost:3001/leaderboard` <br>
+
+</details>
+<br>
+<details>
+
+<summary>Run the tests </summary> <br>
+
+Enter the backend folder:
+```
+cd ./app/backend/
+```
+Install dependencies:
+```
+npm install
+```
+Run the tests
+```
+npm run test:coverage
+```
+</details>
 
 ---
 
