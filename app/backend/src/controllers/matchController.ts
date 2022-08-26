@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import UnauthorizedError from '../errors/unauthorizedError';
+import HttpException from '../errors/httpException';
 import MatchService from '../services/matchService';
 
 export default class MatchController {
@@ -10,7 +10,7 @@ export default class MatchController {
 
   public static async save(req: Request, res: Response) {
     if (req.body.homeTeam === req.body.awayTeam) {
-      throw new UnauthorizedError('It is not possible to create a match with two equal teams');
+      throw new HttpException(401, 'It is not possible to create a match with two equal teams');
     }
 
     const newMatch = await MatchService.save(req.body);

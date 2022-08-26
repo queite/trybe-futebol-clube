@@ -2,8 +2,7 @@ import { compareSync } from 'bcryptjs';
 import IUser, { ILogin } from '../interfaces/IUser';
 import User from '../database/models/User';
 // import ILoginService from '../interfaces/ILoginService';
-import UnauthorizedError from '../errors/unauthorizedError';
-import NotFoundError from '../errors/notFoundError';
+import HttpException from '../errors/httpException';
 
 export default class LoginService {
   public static async getByEmail(email: string): Promise<IUser | null> {
@@ -14,18 +13,18 @@ export default class LoginService {
   public static async login(login: ILogin): Promise<IUser> {
     const user = await LoginService.getByEmail(login.email);
 
-    if (!user) throw new UnauthorizedError('Incorrect email or password');
+    if (!user) throw new HttpException(401, 'Incorrect email or password');
 
     const checkPassword = compareSync(login.password, user.password);
 
-    if (!checkPassword) throw new UnauthorizedError('Incorrect email or password');
+    if (!checkPassword) throw new HttpException(401, 'Incorrect email or password');
 
     return user;
   }
 
   public static async validate(email: string) {
     const user = await LoginService.getByEmail(email);
-    if (!user) throw new NotFoundError('Email not found');
+    if (!user) throw new HttpException(404, 'Email not found');
     return user.role;
   }
 }

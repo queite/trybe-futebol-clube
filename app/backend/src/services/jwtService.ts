@@ -1,6 +1,6 @@
 import { sign, verify } from 'jsonwebtoken';
 import 'dotenv/config';
-import UnauthorizedError from '../errors/unauthorizedError';
+import HttpException from '../errors/httpException';
 
 const secret = process.env.JWT_SECRET || 'string';
 
@@ -11,7 +11,7 @@ export default class jwtService {
 
   static verify(token: string): string | void {
     const validation = verify(token, secret, (err, decode) => {
-      if (err) throw new UnauthorizedError('Token must be a valid token');
+      if (err) throw new HttpException(401, 'Token must be a valid token');
       return decode;
     });
     return validation;

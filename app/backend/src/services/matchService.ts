@@ -1,8 +1,7 @@
 import { IGoals, ISaveMatchBody } from '../interfaces/IMatch';
 import Match from '../database/models/Match';
 import Team from '../database/models/Team';
-import BadRequestError from '../errors/badRequestError';
-import NotFoundError from '../errors/notFoundError';
+import HttpException from '../errors/httpException';
 
 export default class MatchService {
   public static async getAll():Promise<Match[]> {
@@ -21,7 +20,7 @@ export default class MatchService {
     const teams = await Promise.all([match.awayTeam, match.homeTeam]
       .map((team) => Team.findByPk(team)));
 
-    if (teams.includes(null)) throw new NotFoundError('There is no team with such id!');
+    if (teams.includes(null)) throw new HttpException(404, 'There is no team with such id!');
 
     const newMatch = await Match.create({ ...match, inProgress: true });
     return newMatch;
@@ -32,13 +31,13 @@ export default class MatchService {
     const result = await Match.update({ inProgress: false }, {
       where: { id },
     });
-    if (!result[0]) throw new BadRequestError('Match already finished or nonexistent ID');
+    if (!result[0]) throw new HttpException(400, 'Match already finished or nonexistent ID');
   }
 
   public static async updateMatch(id: number, body: IGoals) {
     const update = await Match.update(body, {
       where: { id },
     });
-    if (!update[0]) throw new BadRequestError('Something went wrong');
+    if (!update[0]) throw new HttpException(400, 'Something went wrong');
   }
 }
