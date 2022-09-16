@@ -6,6 +6,7 @@ export interface IGoals {
 export interface ISaveMatchBody extends IGoals {
   homeTeam: number
   awayTeam: number
+  inProgress?: boolean
 }
 
 export default interface IMatch extends ISaveMatchBody {

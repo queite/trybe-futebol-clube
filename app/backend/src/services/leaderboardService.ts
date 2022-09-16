@@ -1,10 +1,12 @@
 import ITeam from '../interfaces/ITeam';
 import IBoard from '../interfaces/Iboard';
 import IMatch from '../interfaces/IMatch';
-import MatchService from './matchService';
 import TeamService from './teamService';
+import IMatchRepository from '../interfaces/IMatchRepository';
 
 export default class LeaderboardService {
+  constructor(private repository: IMatchRepository) {}
+
   public static totalPointsCalc(from: 'home' | 'away', match: IMatch[]) {
     const rival = from === 'home' ? 'away' : 'home';
     let totalPoints = 0;
@@ -53,18 +55,18 @@ export default class LeaderboardService {
     return { goalsFavor, goalsOwn, goalsBalance: goalsFavor - goalsOwn };
   }
 
-  public static async getResults(from: 'home' | 'away') {
+  async getResults(from: 'home' | 'away') {
     const teamFrom = from === 'home' ? 'Home' : 'Away';
     const teams = await TeamService.getAll();
-    const matches = await MatchService.getAll();
-    const finishedMatches = matches.filter((match) => match.inProgress === false);
+    const matches = await this.repository.findAll();
+    const finishedMatches = matches.filter((match: IMatch) => match.inProgress === false);
 
     const results = await Promise.all(teams.map((team) => {
       const teamMatches = finishedMatches
         .filter((match: IMatch) => team.teamName === match[`team${teamFrom}`]?.teamName);
-      return this.createResults(from, teamMatches);
+      return LeaderboardService.createResults(from, teamMatches);
     }));
-    return this.orderBoard(results);
+    return LeaderboardService.orderBoard(results);
   }
 
   public static createResults(from: 'home' | 'away', matches: IMatch[]) {
