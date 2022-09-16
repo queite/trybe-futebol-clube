@@ -1,11 +1,11 @@
 import ITeam from '../interfaces/ITeam';
 import IBoard from '../interfaces/Iboard';
 import IMatch from '../interfaces/IMatch';
-import TeamService from './teamService';
 import IMatchRepository from '../interfaces/IMatchRepository';
+import ITeamRepository from '../interfaces/ITeamRepository';
 
 export default class LeaderboardService {
-  constructor(private repository: IMatchRepository) {}
+  constructor(private matchRepo: IMatchRepository, private teamRepo: ITeamRepository) {}
 
   public static totalPointsCalc(from: 'home' | 'away', match: IMatch[]) {
     const rival = from === 'home' ? 'away' : 'home';
@@ -57,8 +57,8 @@ export default class LeaderboardService {
 
   async getResults(from: 'home' | 'away') {
     const teamFrom = from === 'home' ? 'Home' : 'Away';
-    const teams = await TeamService.getAll();
-    const matches = await this.repository.findAll();
+    const teams = await this.teamRepo.findAll();
+    const matches = await this.matchRepo.findAll();
     const finishedMatches = matches.filter((match: IMatch) => match.inProgress === false);
 
     const results = await Promise.all(teams.map((team) => {
@@ -99,37 +99,38 @@ export default class LeaderboardService {
     return obj;
   }
 
-  public static createTotalResults(teams:ITeam[], homeTeams: IBoard[], awayTeams: IBoard[]) {
+  // eslint-disable-next-line class-methods-use-this
+  createTotalResults(teams:ITeam[], homeTeams: IBoard[], awayTeams: IBoard[]) {
     return teams.map((team) => ({
       name: team.teamName,
-      totalPoints: this.filterTeams(team, homeTeams).totalPoints
-        + this.filterTeams(team, awayTeams).totalPoints,
-      totalGames: this.filterTeams(team, homeTeams).totalGames
-        + this.filterTeams(team, awayTeams).totalGames,
-      totalVictories: this.filterTeams(team, homeTeams).totalVictories
-        + this.filterTeams(team, awayTeams).totalVictories,
-      totalDraws: this.filterTeams(team, homeTeams).totalDraws
-        + this.filterTeams(team, awayTeams).totalDraws,
-      totalLosses: this.filterTeams(team, homeTeams).totalLosses
-        + this.filterTeams(team, awayTeams).totalLosses,
-      goalsFavor: this.filterTeams(team, homeTeams).goalsFavor
-        + this.filterTeams(team, awayTeams).goalsFavor,
-      goalsOwn: this.filterTeams(team, homeTeams).goalsOwn
-        + this.filterTeams(team, awayTeams).goalsOwn,
-      goalsBalance: this.filterTeams(team, homeTeams).goalsBalance
-      + this.filterTeams(team, awayTeams).goalsBalance }));
+      totalPoints: LeaderboardService.filterTeams(team, homeTeams).totalPoints
+        + LeaderboardService.filterTeams(team, awayTeams).totalPoints,
+      totalGames: LeaderboardService.filterTeams(team, homeTeams).totalGames
+        + LeaderboardService.filterTeams(team, awayTeams).totalGames,
+      totalVictories: LeaderboardService.filterTeams(team, homeTeams).totalVictories
+        + LeaderboardService.filterTeams(team, awayTeams).totalVictories,
+      totalDraws: LeaderboardService.filterTeams(team, homeTeams).totalDraws
+        + LeaderboardService.filterTeams(team, awayTeams).totalDraws,
+      totalLosses: LeaderboardService.filterTeams(team, homeTeams).totalLosses
+        + LeaderboardService.filterTeams(team, awayTeams).totalLosses,
+      goalsFavor: LeaderboardService.filterTeams(team, homeTeams).goalsFavor
+        + LeaderboardService.filterTeams(team, awayTeams).goalsFavor,
+      goalsOwn: LeaderboardService.filterTeams(team, homeTeams).goalsOwn
+        + LeaderboardService.filterTeams(team, awayTeams).goalsOwn,
+      goalsBalance: LeaderboardService.filterTeams(team, homeTeams).goalsBalance
+      + LeaderboardService.filterTeams(team, awayTeams).goalsBalance }));
   }
 
-  public static async getTotalResults() {
-    const teams = await TeamService.getAll();
-    const homeTeams = await LeaderboardService.getResults('home');
-    const awayTeams = await LeaderboardService.getResults('away');
+  async getTotalResults() {
+    const teams = await this.teamRepo.findAll();
+    const homeTeams = await this.getResults('home');
+    const awayTeams = await this.getResults('away');
 
     const board = this.createTotalResults(teams, homeTeams, awayTeams);
     const finishedBoard = board.map((item) => ({
       ...item,
-      efficiency: this.efficiencyCalc(item.totalPoints, item.totalGames),
+      efficiency: LeaderboardService.efficiencyCalc(item.totalPoints, item.totalGames),
     }));
-    return this.orderBoard(finishedBoard);
+    return LeaderboardService.orderBoard(finishedBoard);
   }
 }
