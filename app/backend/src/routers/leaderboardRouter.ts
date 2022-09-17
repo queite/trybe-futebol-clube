@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import LeaderboardFactory from '../factories/LeaderBoardFactory';
+import LeaderboardFactory from '../factories/LeaderboardFactory';
 
 const router = Router();
 
