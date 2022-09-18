@@ -7,8 +7,8 @@ import { app } from '../app';
 import User from '../database/models/User';
 import jwtService from '../services/jwtService';
 import * as bcrypt from 'bcryptjs';
-import LoginService from '../services/loginService';
 import { badLoginMock, loginBadPasswordMock, loginMock, userMock } from './mocks/loginMock';
+import UserService from '../services/userService';
 
 
 chai.use(chaiHttp);
@@ -36,7 +36,7 @@ describe('/login', () => {
   })
 
   it('should return an error if password is not correct', async () => {
-    sinon.stub(LoginService, 'getByEmail').resolves(userMock)
+    sinon.stub(UserService.prototype, 'getByEmail').resolves(userMock)
     sinon.stub(bcrypt, 'compareSync').returns(false);
 
     const response = await chai.request(app).post('/login').send(loginBadPasswordMock);
@@ -56,7 +56,7 @@ describe('/login/validate', () => {
 
   it('should return a role if a valid token is send', async () => {
     sinon.stub(jwtService,  'verify').returns('test@test.com')
-    sinon.stub(LoginService, 'getByEmail').resolves(userMock);
+    sinon.stub(UserService.prototype, 'getByEmail').resolves(userMock);
 
     const response = await chai.request(app).get('/login/validate').set({ "Authorization": `token` });
 
@@ -71,7 +71,7 @@ describe('/login/validate', () => {
 
   it('should return status 401 and meddage "Email not found" if the email is not registered', async () => {
     sinon.stub(jwtService,  'verify').returns('test@test.com')
-    sinon.stub(LoginService, 'getByEmail').resolves(null)
+    sinon.stub(UserService.prototype, 'getByEmail').resolves(null)
 
     const res = await chai.request(app).get('/login/validate').set({ "Authorization": `token` });
     expect(res.status).to.be.eq(404);
