@@ -1,15 +1,16 @@
 import ITeam from '../interfaces/ITeam';
-import Team from '../database/models/Team';
 import HttpException from '../errors/httpException';
+import ITeamRepository from '../interfaces/ITeamRepository';
 
 export default class TeamService {
-  public static async getAll(): Promise<ITeam[]> {
-    const teams = await Team.findAll();
-    return teams;
+  constructor(private repository: ITeamRepository) {}
+
+  async getAll(): Promise<ITeam[]> {
+    return this.repository.findAll();
   }
 
-  public static async getById(id: number): Promise<ITeam> {
-    const team = await Team.findByPk(id);
+  async getById(id: number): Promise<ITeam> {
+    const team = await this.repository.findById(id);
     if (!team) throw new HttpException(404, 'ID not found');
     return team;
   }

@@ -1,13 +1,11 @@
 import { Router } from 'express';
-import LoginController from '../controllers/loginController';
-// import LoginService from '../services/loginService';
+import UserFactory from '../factories/UserFactory';
 
-// const loginService = new LoginService();
-const loginController = new LoginController();
+const loginController = UserFactory.make();
 
 const router = Router();
 
-router.post('/', loginController.login);
-router.get('/validate', loginController.validate);
+router.post('/', (req, res) => loginController.login(req, res));
+router.get('/validate', (req, res) => loginController.validate(req, res));
 
 export default router;

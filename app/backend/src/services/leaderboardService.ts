@@ -1,11 +1,13 @@
 import ITeam from '../interfaces/ITeam';
 import IBoard from '../interfaces/Iboard';
 import IMatch from '../interfaces/IMatch';
-import MatchService from './matchService';
-import TeamService from './teamService';
+import IMatchRepository from '../interfaces/IMatchRepository';
+import ITeamRepository from '../interfaces/ITeamRepository';
 
 export default class LeaderboardService {
-  public static totalPointsCalc(from: 'home' | 'away', match: IMatch[]) {
+  constructor(private matchRepo: IMatchRepository, private teamRepo: ITeamRepository) {}
+
+  totalPointsCalc = (from: 'home' | 'away', match: IMatch[]) => {
     const rival = from === 'home' ? 'away' : 'home';
     let totalPoints = 0;
     match.forEach((element) => {
@@ -18,9 +20,9 @@ export default class LeaderboardService {
       }
     });
     return totalPoints;
-  }
+  };
 
-  public static matchesCalc(from: 'home' | 'away', match: IMatch[]) {
+  matchesCalc = (from: 'home' | 'away', match: IMatch[]) => {
     const rival = from === 'home' ? 'away' : 'home';
     let totalVictories = 0;
     let totalDraws = 0;
@@ -35,13 +37,12 @@ export default class LeaderboardService {
       }
     });
     return { totalVictories, totalDraws, totalLosses };
-  }
+  };
 
-  public static efficiencyCalc(points: number, matches: number) {
-    return Number(((points / (matches * 3)) * 100).toFixed(2));
-  }
+  efficiencyCalc = (points: number, matches: number) => Number(((points / (matches * 3)) * 100)
+    .toFixed(2));
 
-  public static goalsCalc(from: 'home' | 'away', matches: IMatch[]) {
+  goalsCalc = (from: 'home' | 'away', matches: IMatch[]) => {
     const rival = from === 'home' ? 'away' : 'home';
     let goalsFavor = 0;
     let goalsOwn = 0;
@@ -51,23 +52,9 @@ export default class LeaderboardService {
     });
 
     return { goalsFavor, goalsOwn, goalsBalance: goalsFavor - goalsOwn };
-  }
+  };
 
-  public static async getResults(from: 'home' | 'away') {
-    const teamFrom = from === 'home' ? 'Home' : 'Away';
-    const teams = await TeamService.getAll();
-    const matches = await MatchService.getAll();
-    const finishedMatches = matches.filter((match) => match.inProgress === false);
-
-    const results = await Promise.all(teams.map((team) => {
-      const teamMatches = finishedMatches
-        .filter((match: IMatch) => team.teamName === match[`team${teamFrom}`]?.teamName);
-      return this.createResults(from, teamMatches);
-    }));
-    return this.orderBoard(results);
-  }
-
-  public static createResults(from: 'home' | 'away', matches: IMatch[]) {
+  createResults(from: 'home' | 'away', matches: IMatch[]) {
     const teamFrom = from === 'home' ? 'Home' : 'Away';
     return {
       name: matches[0][`team${teamFrom}`]?.teamName,
@@ -83,21 +70,37 @@ export default class LeaderboardService {
     };
   }
 
-  public static orderBoard(results: IBoard[]) {
-    return results.sort((a: IBoard, b: IBoard) => b.totalPoints - a.totalPoints
-      || b.totalVictories - a.totalVictories
-      || b.goalsBalance - a.goalsBalance
-      || b.goalsFavor - a.goalsFavor
-      || a.goalsOwn - b.goalsOwn);
+  orderBoard = (results: IBoard[]) => results
+    .sort((a: IBoard, b: IBoard) => b.totalPoints - a.totalPoints
+    || b.totalVictories - a.totalVictories
+    || b.goalsBalance - a.goalsBalance
+    || b.goalsFavor - a.goalsFavor
+    || a.goalsOwn - b.goalsOwn);
+
+  async getResults(from: 'home' | 'away') {
+    const teamFrom = from === 'home' ? 'Home' : 'Away';
+    const teams = await this.teamRepo.findAll();
+    const matches = await this.matchRepo.findAll();
+    const finishedMatches = matches.filter((match: IMatch) => match.inProgress === false);
+
+    // Pega todos os times e para cada um faz um filtro nas partidas terminadas em que o nome do time é o mesmo do nome do time da partida de (casa ou de fora cfe o caso) e retorna o obj calculado de cada time.
+    const results = await Promise.all(teams.map((team) => {
+      const teamMatches = finishedMatches
+        .filter((match: IMatch) => team.teamName === match[`team${teamFrom}`]?.teamName);
+      return this.createResults(from, teamMatches);
+    }));
+    return this.orderBoard(results);
   }
 
   // Métodos para geração de resultado consolidado
-  public static filterTeams(team: ITeam, homeTeams: IBoard[]) {
+
+  //
+  filterTeams = (team: ITeam, homeTeams: IBoard[]) => {
     const [obj] = homeTeams.filter((item) => item.name === team.teamName);
     return obj;
-  }
+  };
 
-  public static createTotalResults(teams:ITeam[], homeTeams: IBoard[], awayTeams: IBoard[]) {
+  createTotalResults(teams:ITeam[], homeTeams: IBoard[], awayTeams: IBoard[]) {
     return teams.map((team) => ({
       name: team.teamName,
       totalPoints: this.filterTeams(team, homeTeams).totalPoints
@@ -118,12 +121,13 @@ export default class LeaderboardService {
       + this.filterTeams(team, awayTeams).goalsBalance }));
   }
 
-  public static async getTotalResults() {
-    const teams = await TeamService.getAll();
-    const homeTeams = await LeaderboardService.getResults('home');
-    const awayTeams = await LeaderboardService.getResults('away');
+  async getTotalResults() {
+    const teams = await this.teamRepo.findAll();
+    const homeTeams = await this.getResults('home');
+    const awayTeams = await this.getResults('away');
 
     const board = this.createTotalResults(teams, homeTeams, awayTeams);
+
     const finishedBoard = board.map((item) => ({
       ...item,
       efficiency: this.efficiencyCalc(item.totalPoints, item.totalGames),
